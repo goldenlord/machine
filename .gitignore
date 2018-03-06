@@ -32,3 +32,10 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# 
+/Tank/Temp/
+/Tank/Library/
+/Tank/Obj/
+/Tank/ProjectSettings/
+/Tank/UnityPackageManager/

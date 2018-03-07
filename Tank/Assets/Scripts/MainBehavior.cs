@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using machine;
 
+/// <summary>
+/// Main behavior.
+/// </summary>
 public class MainBehavior : MonoBehaviour
 {
 	private GameManager _gameManager;

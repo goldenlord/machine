@@ -2,6 +2,9 @@
 
 namespace machine
 {
+	/// <summary>
+	/// Prefab manager.
+	/// </summary>
 	public class PrefabManager
 	{
 		const string PREFAB_PATH = "Prefabs/";

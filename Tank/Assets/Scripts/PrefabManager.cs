@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 
-namespace Tank
+namespace machine
 {
 	public class PrefabManager
 	{
 		const string PREFAB_PATH = "Prefabs/";
 
-		private GameObject _tankPrefab;
-		public GameObject TankPrefab { get { return _tankPrefab; } }
+		public GameObject TankPrefab { private set; get; }
 
 		public PrefabManager ()
 		{
@@ -16,7 +15,7 @@ namespace Tank
 
 		private void Load ()
 		{
-			_tankPrefab = (GameObject)Resources.Load (PREFAB_PATH + "Tank");
+			TankPrefab = (GameObject)Resources.Load (PREFAB_PATH + "Tank");
 		}
 	}
 }

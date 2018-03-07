@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using Tank;
 
-namespace Tank
+namespace machine
 {
 	public class GameManager
 	{
@@ -9,6 +10,7 @@ namespace Tank
 		const float TANK_START_POSITION_Y = -1500f;
 
 		private PrefabManager _prefabManager;
+		private TouchControl _touchControl;
 		//Todo: player和enemy分离
 		private TankBase _tank;
 
@@ -16,8 +18,14 @@ namespace Tank
 		{
 			_prefabManager = new PrefabManager ();
 			CreateTank ();
-
+			_touchControl = new TouchControl (_tank);
+			//初始化
 			Initialize ();
+		}
+
+		public void Update ()
+		{
+			_touchControl.Update ();
 		}
 
 		private void Initialize ()

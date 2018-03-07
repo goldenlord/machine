@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tank;
+using machine;
 
 public class MainBehavior : MonoBehaviour
 {
@@ -16,6 +16,6 @@ public class MainBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
+		_gameManager.Update ();
 	}
 }

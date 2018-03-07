@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Tank
+namespace machine.Tank
 {
 	/// <summary>
-	/// 坦克
+	/// tank
 	/// </summary>
 	public class TankBase
 	{

@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 
-namespace Tank
+namespace machine.Tank
 {
+	/// <summary>
+	/// view of tank
+	/// </summary>
 	public class TankViewBase
 	{
 		public const float UP_DIRECTION_EULER_Z = 0f;
 		public const float DOWN_DIRECTION_EULER_Z = -180f;
 		public const float LEFT_DIRECTION_EULER_Z = 90f;
 		public const float RIGHT_DIRECTION_EULER_Z = -90f;
+
+		private const float DEFAULT_Z = -1f;
 
 		private GameObject _object;
 
@@ -18,7 +23,7 @@ namespace Tank
 
 		public void SetPosition (float x, float y)
 		{
-			_object.transform.position = new Vector3 (x, y, 0f);
+			_object.transform.position = new Vector3 (x, y, DEFAULT_Z);
 		}
 
 		public void Move (MoveDirection direction, float speed)

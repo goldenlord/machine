@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
-using Tank;
+using machine.Tank;
 
+/// <summary>
+/// Control tank moving
+/// </summary>
 public class TouchControl
 {
 	private TankBase _tank;

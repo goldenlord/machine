@@ -8,21 +8,25 @@ namespace machine.Field
 	public class BattleFieldView
 	{
 		private GameObject _object;
+
+		public float FieldWidth { private set; get; }
+		public float FieldHeight { private set; get; }
+
 		public BattleFieldView (GameObject fieldPrefab)
 		{
 			_object = UnityEngine.Object.Instantiate (fieldPrefab);
-			InitializeField ();
+			Initialize ();
 		}
 
-		private void InitializeField ()
+		private void Initialize ()
 		{
 			Camera camera = GameManager.MainCamera;
-			SpriteRenderer fieldObject = _object.GetComponent<SpriteRenderer> ();
-			fieldObject.drawMode = SpriteDrawMode.Sliced;
+			SpriteRenderer backGround = _object.GetComponent<SpriteRenderer> ();
+			backGround.drawMode = SpriteDrawMode.Sliced;
 			//size
-			float x = camera.orthographicSize * 2 * camera.aspect;
-			float y = camera.orthographicSize * 2;
-			fieldObject.size = new Vector2 (x, y);
+			FieldWidth = camera.orthographicSize * 2 * camera.aspect;
+			FieldHeight = camera.orthographicSize * 2;
+			backGround.size = new Vector2 (FieldWidth, FieldHeight);
 		}
 	}
 }

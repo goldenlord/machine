@@ -13,6 +13,7 @@ namespace machine
 		private BattleField _field;
 
 		public BattlePlayer Player {private set; get;}
+		public BattleEnemy Enemy { private set; get;}
 
 		//main camera
 		public static Camera MainCamera { get { return Camera.main; } }
@@ -21,7 +22,7 @@ namespace machine
 		{
 			_prefabManager = new PrefabManager ();
 			CreateField ();
-			CreatePlayer ();
+			CreatePlayers ();
 			_touchControl = new TouchControl (Player.Tank);
 		}
 
@@ -38,10 +39,15 @@ namespace machine
 			}
 		}
 
-		private void CreatePlayer ()
+		private void CreatePlayers ()
 		{
-			if (Player == null) {
+			if (Player == null)
+			{
 				Player = new BattlePlayer (_field, _prefabManager);
+			}
+			if (Enemy == null)
+			{
+				Enemy = new BattleEnemy (_field, _prefabManager);
 			}
 		}
 	}

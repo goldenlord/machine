@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using machine.Player;
 
 namespace machine.Field
 {
@@ -6,7 +7,14 @@ namespace machine.Field
 	{
 		protected override float DefaultSize { get { return 500f; }}
 
-		public HeadquartersView (GameObject headquartersPrefab) : base (headquartersPrefab) {}
+		public HeadquartersView (GameObject headquartersPrefab, bool isPlayer) : base (headquartersPrefab)
+		{
+			if (!isPlayer)
+			{
+				SpriteRenderer sprite = _object.GetComponent<SpriteRenderer> ();
+				sprite.color = BattleEnemy.ENEMY_HEADQUARTERS_COLOR;
+			}
+		}
 
 		public void SetStartPosition (BattleField field, bool isPlayer)
 		{

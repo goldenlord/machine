@@ -15,11 +15,17 @@ namespace machine
 		public BattlePlayer Player {private set; get;}
 		public BattleEnemy Enemy { private set; get;}
 
+		//for coroutine
+		public static SubBehaviour CoroutineHandler {private set; get;}
+
 		//main camera
 		public static Camera MainCamera { get { return Camera.main; } }
 
 		public GameManager ()
 		{
+			//coroutine handler
+			GameObject g = new GameObject ();
+			CoroutineHandler = g.AddComponent<SubBehaviour> ();
 			_prefabManager = new PrefabManager ();
 			CreateField ();
 			CreatePlayers ();
@@ -35,7 +41,7 @@ namespace machine
 		{
 			if (_field == null)
 			{
-				_field = new BattleField (_prefabManager.FieldPrefab);
+				_field = new BattleField (_prefabManager);
 			}
 		}
 
@@ -43,11 +49,11 @@ namespace machine
 		{
 			if (Player == null)
 			{
-				Player = new BattlePlayer (_field, _prefabManager);
+				Player = new BattlePlayer (_field);
 			}
 			if (Enemy == null)
 			{
-				Enemy = new BattleEnemy (_field, _prefabManager);
+				Enemy = new BattleEnemy (_field);
 			}
 		}
 	}

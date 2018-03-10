@@ -13,6 +13,7 @@ namespace machine
 		public GameObject FieldPrefab { private set; get; }
 		public GameObject BrickWallPrefab { private set; get; }
 		public GameObject HeadquartersPrefab { private set; get; }
+		public GameObject BulletPrefab { private set; get; }
 
 		public PrefabManager ()
 		{
@@ -25,6 +26,7 @@ namespace machine
 			FieldPrefab = (GameObject)Resources.Load (PREFAB_PATH + "Field");
 			BrickWallPrefab = (GameObject)Resources.Load (PREFAB_PATH + "BrickWall");
 			HeadquartersPrefab = (GameObject)Resources.Load (PREFAB_PATH + "Headquarters");
+			BulletPrefab =  (GameObject)Resources.Load (PREFAB_PATH + "Bullet");
 		}
 	}
 }

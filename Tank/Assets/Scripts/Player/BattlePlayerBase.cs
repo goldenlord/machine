@@ -8,15 +8,15 @@ namespace machine.Player
 		public virtual bool IsPlayer { get { return true; } }
 		protected Headquarters _headquarters;
 
-		public BattlePlayerBase (BattleField field, PrefabManager prefabManager)
+		public BattlePlayerBase (BattleField field)
 		{
 			Field = field;
 			//Headquarters
-			CreateHeadquarters (prefabManager);
+			CreateHeadquarters ();
 			//Tank
-			CreateTank (prefabManager);
+			CreateTank ();
 			Initialize ();
-			field.CreateBrickWallsForHeadquarters (_headquarters, prefabManager);
+			Field.CreateBrickWallsForHeadquarters (_headquarters);
 		}
 
 		protected virtual void Initialize ()
@@ -24,14 +24,13 @@ namespace machine.Player
 			((HeadquartersView)_headquarters.View).SetStartPosition (Field, IsPlayer);
 		}
 
-		protected virtual void CreateTank (PrefabManager prefabManager) {}
+		protected virtual void CreateTank () {}
 
-		protected virtual void CreateHeadquarters (PrefabManager prefabManager)
+		protected virtual void CreateHeadquarters ()
 		{
 			if (_headquarters == null)
 			{
-				_headquarters = new Headquarters (prefabManager.HeadquartersPrefab, IsPlayer);
-				Field.FieldObjects.Add (_headquarters);
+				_headquarters = Field.CreateHeadquarters (IsPlayer);
 			}
 		}
 	}

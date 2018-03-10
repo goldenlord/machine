@@ -8,7 +8,7 @@ namespace machine.Player
 	{
 		public static Color ENEMY_HEADQUARTERS_COLOR = Color.red;
 		public override bool IsPlayer { get { return false; } }
-		public BattleEnemy (BattleField field, PrefabManager prefabManager) : base (field, prefabManager) {}
+		public BattleEnemy (BattleField field) : base (field) {}
 
 
 	}

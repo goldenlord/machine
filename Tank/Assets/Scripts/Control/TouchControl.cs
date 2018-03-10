@@ -16,7 +16,10 @@ public class TouchControl
 	public void Update ()
 	{
 		MoveDirection direction = GetMoveDirection ();
-		_tank.MoveTank (direction);
+		if (direction != MoveDirection.NONE)
+		{
+			_tank.MoveTank (direction);
+		}
 	}
 
 	private MoveDirection GetMoveDirection ()

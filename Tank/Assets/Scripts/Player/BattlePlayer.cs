@@ -10,7 +10,7 @@ namespace machine.Player
 		public static Quaternion TANK_START_ROTATION = Quaternion.Euler (new Vector3 (0f, 0f, -90f));
 
 		public TankBase Tank { private set; get; }
-		public BattlePlayer (BattleField field, PrefabManager prefabManager) : base (field, prefabManager) {}
+		public BattlePlayer (BattleField field) : base (field) {}
 
 		protected override void Initialize ()
 		{
@@ -18,11 +18,11 @@ namespace machine.Player
 			Tank.View.Move (TANK_START_POSITION, TANK_START_ROTATION);
 		}
 
-		protected override void CreateTank (PrefabManager prefabManager)
+		protected override void CreateTank ()
 		{
 			if (Tank == null)
 			{
-				Tank = new TankBase (prefabManager.TankPrefab, Field);
+				Tank = Field.CreateTank (IsPlayer);
 			}
 		}
 	}

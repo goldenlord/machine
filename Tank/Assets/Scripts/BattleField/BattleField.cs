@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using machine.Tank;
 
 namespace machine.Field
 {
@@ -11,22 +12,33 @@ namespace machine.Field
 	{
 		public BattleFieldView View { private set; get; }
 		public List<FieldObjectBase> FieldObjects;
+		private FieldObjectCreator _objectCreator;
 
-		public BattleField (GameObject fieldPrefab)
+		public BattleField (PrefabManager prefabManager)
 		{
-			View = new BattleFieldView (fieldPrefab);
+			View = new BattleFieldView (prefabManager.FieldPrefab);
 			FieldObjects = new List<FieldObjectBase> ();
+			_objectCreator = new FieldObjectCreator (prefabManager, this);
 		}
 
-		public void CreateBrickWallsForHeadquarters (Headquarters headquarters, PrefabManager prefabManager)
+		public TankBase CreateTank (bool isPlayer)
+		{
+			return _objectCreator.CreateTank (isPlayer);
+		}
+
+		public Headquarters CreateHeadquarters (bool isPlayer)
+		{
+			return _objectCreator.CreateHeadquarters (isPlayer);
+		}
+
+		public void CreateBrickWallsForHeadquarters (Headquarters headquarters)
 		{
 			const int brickWallCount = 8;
 			List<BrickWall> brickWalls = new List<BrickWall> ();
 			for (int index = 0; index < brickWallCount; ++index)
 			{
-				BrickWall brickWall = new BrickWall (prefabManager.BrickWallPrefab);
+				BrickWall brickWall = _objectCreator.CreateBrickWall ();
 				brickWalls.Add (brickWall);
-				FieldObjects.Add (brickWall);
 			}
 			float brickWallSizeHalfX = brickWalls [0].View.Size.x / 2;
 			float brickWallSizeHalfY = brickWalls [0].View.Size.y / 2;
@@ -59,8 +71,9 @@ namespace machine.Field
 
 		}
 
-		public bool CheckTankMovable (Vector3 position, Vector2 size)
+		public bool CheckTankMovable (TankBase tank, Vector3 position)
 		{
+			Vector2 size = tank.View.Size;
 			//Check if tank is in field
 			float x = Mathf.Abs (position.x) + size.x / 2;
 			float y = Mathf.Abs (position.y) + size.y / 2;
@@ -72,6 +85,7 @@ namespace machine.Field
 			for (int index = 0; index < FieldObjects.Count; ++index)
 			{
 				FieldObjectBase objectTemp = FieldObjects [index];
+				if (objectTemp == tank) continue;
 				if (!objectTemp.CanBePassThrough)
 				{
 					//Todo: Check collision
@@ -84,7 +98,6 @@ namespace machine.Field
 					}
 				}
 			}
-
 			return true;
 		}
 	}

@@ -15,20 +15,30 @@ namespace machine.Tank
 
 		public static float DEFAULT_SPEED = 10f;
 
-		public BattleField Field { private set; get; }
+		public BattleField Field { private set; get; } 
 
 		public float Speed { private set; get; }
+		public MoveDirection Direction { private set; get; }
+		public bool IsPlayer { private set; get; }
 
-		public TankBase (GameObject tankPrefab, BattleField field)
+		private Cannon _cannon;
+
+		public TankBase (GameObject tankPrefab, GameObject bulletPrefab, BattleField field, bool isPlayer)
 		{
 			Field = field;
+			IsPlayer = isPlayer;
 			//view生成
 			View = new TankViewBase (tankPrefab);
+			//cannon
+			Direction = isPlayer ? MoveDirection.RIGHT : MoveDirection.LEFT;
+			_cannon = new Cannon (this, bulletPrefab);
+
 			Speed = DEFAULT_SPEED;
 		}
 
 		public void MoveTank (MoveDirection direction)
 		{
+			Direction = direction;
 			Vector3 newPosition = View.Position;
 			Quaternion newRotation = Quaternion.Euler (0f, 0f, 0f);
 			switch (direction)
@@ -53,7 +63,7 @@ namespace machine.Tank
 				return;
 			}
 			//check movability
-			if (Field.CheckTankMovable (newPosition, View.Size))
+			if (Field.CheckTankMovable (this, newPosition))
 			{
 				View.Move (newPosition, newRotation);
 			}

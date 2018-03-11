@@ -1,41 +1,51 @@
 ﻿using UnityEngine;
+using machine.Field;
 
 namespace machine.Tank
 {
-	public class Bullet : MonoBehaviour
+	public class Bullet : FieldObjectBase
 	{
 		public float Speed;
 		public MoveDirection Direction;
+		public bool IsDead;
+		public TankBase SelfTank { private set; get; }
 
-		private void Update ()
+		public Bullet (GameObject bulletPrefab, TankBase tank) : base ()
 		{
-			if (Speed > 0f)
-			{
-				Move ();
-			}
+			View = new BulletView (bulletPrefab);
+			SelfTank = tank;
+			View.SetPosition (tank.View.Position.x, tank.View.Position.y);
+			IsDead = false;
 		}
 
-		private void Move ()
+		public void Move ()
 		{
-			Vector3 displacement = Vector3.zero;
+			Vector3 newPosition = View.Position;
 			switch (Direction)
 			{
+			case MoveDirection.UP:
+				newPosition += new Vector3 (0f, Speed, 0f);
+				break;
 			case MoveDirection.DOWN:
-				displacement = new Vector3 (0f, -Speed, 0f);
+				newPosition += new Vector3 (0f, -Speed, 0f);
 				break;
 			case MoveDirection.LEFT:
-				displacement = new Vector3 (-Speed, 0f, 0f);
+				newPosition += new Vector3 (-Speed, 0f, 0f);
 				break;
 			case MoveDirection.RIGHT:
-				displacement = new Vector3 (Speed, 0f, 0f);
-				break;
-			case MoveDirection.UP:
-				displacement = new Vector3 (0f, Speed, 0f);
+				newPosition += new Vector3 (Speed, 0f, 0f);
 				break;
 			default:
 				return;
 			}
-			gameObject.transform.position = gameObject.transform.position + displacement;
+			View.Move (newPosition, Quaternion.Euler (0f, 0f, 0f));
+		}
+
+		public void Destroy ()
+		{
+			View.DestroyObject ();
+			View = null;
+			IsDead = true;
 		}
 	}
 }

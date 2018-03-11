@@ -35,6 +35,7 @@ namespace machine
 		public void Update ()
 		{
 			_touchControl.Update ();
+			_field.BulletsFly ();
 		}
 
 		private void CreateField ()

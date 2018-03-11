@@ -12,12 +12,14 @@ namespace machine.Field
 	{
 		public BattleFieldView View { private set; get; }
 		public List<FieldObjectBase> FieldObjects;
+		public List<Bullet> Bullets;
 		private FieldObjectCreator _objectCreator;
 
 		public BattleField (PrefabManager prefabManager)
 		{
 			View = new BattleFieldView (prefabManager.FieldPrefab);
 			FieldObjects = new List<FieldObjectBase> ();
+			Bullets = new List<Bullet> ();
 			_objectCreator = new FieldObjectCreator (prefabManager, this);
 		}
 
@@ -68,37 +70,77 @@ namespace machine.Field
 			{
 				brickWalls [restIndex].View.SetPosition (restBricksX, upperY - (restIndex - brickIndex) * brickWallSizeHalfY * 2);
 			}
-
 		}
 
-		public bool CheckTankMovable (TankBase tank, Vector3 position)
+		public void BulletsFly ()
 		{
-			Vector2 size = tank.View.Size;
+			for (int index = 0; index < Bullets.Count; ++index)
+			{
+				Bullet bullet = Bullets [index];
+				if (bullet.Speed > 0)
+				{
+					FieldObjectBase hit = HitObject (bullet, bullet.View.Position);
+					if ((hit == null || hit == bullet.SelfTank)  && CheckIsInField (bullet, bullet.View.Position))
+					{
+						bullet.Move ();
+					}
+					else
+					{
+						bullet.Destroy ();
+					}
+				}
+			}
+			//delete dead bullet
+			Bullets.RemoveAll (b => b.IsDead);
+		}
+
+		public bool CheckMovable (FieldObjectBase movingObject, Vector3 position)
+		{
+			if (!CheckIsInField (movingObject, position))
+			{
+				return false;
+			}
+			if (HitObject (movingObject, position) != null)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		public bool CheckIsInField (FieldObjectBase movingObject, Vector3 newPosition)
+		{
+			Vector2 size = movingObject.View.Size;
 			//Check if tank is in field
-			float x = Mathf.Abs (position.x) + size.x / 2;
-			float y = Mathf.Abs (position.y) + size.y / 2;
+			float x = Mathf.Abs (newPosition.x) + size.x / 2;
+			float y = Mathf.Abs (newPosition.y) + size.y / 2;
 			if (x > View.FieldWidth / 2 || y > View.FieldHeight / 2)
 			{
 				return false;
 			}
+			return true;
+		}
+
+		public FieldObjectBase HitObject (FieldObjectBase movingObject, Vector3 newPosition)
+		{
+			Vector2 size = movingObject.View.Size;
 			//Check if tank collides with other objects
 			for (int index = 0; index < FieldObjects.Count; ++index)
 			{
 				FieldObjectBase objectTemp = FieldObjects [index];
-				if (objectTemp == tank) continue;
+				if (objectTemp == movingObject) continue;
 				if (!objectTemp.CanBePassThrough)
 				{
 					//Todo: Check collision
-					float horizontalDistance = Mathf.Abs(position.x - objectTemp.View.Position.x);
-					float verticalDistance = Mathf.Abs (position.y - objectTemp.View.Position.y);
+					float horizontalDistance = Mathf.Abs(newPosition.x - objectTemp.View.Position.x);
+					float verticalDistance = Mathf.Abs (newPosition.y - objectTemp.View.Position.y);
 					if (horizontalDistance < (objectTemp.View.Size.x + size.x) / 2
 						&& verticalDistance < (objectTemp.View.Size.y + size.y) / 2)
 					{
-						return false;
+						return objectTemp;
 					}
 				}
 			}
-			return true;
+			return null;
 		}
 	}
 }

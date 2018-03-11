@@ -4,7 +4,7 @@ namespace machine.Field
 {
 	public class FieldObjectViewBase
 	{
-		protected const float DEFAULT_Z = -1f;
+		protected virtual float DefaultZ { get { return -1f; } }
 		protected virtual float DefaultSize { get { return 250f; } }
 		protected GameObject _object;
 		public Vector2 Size { private set; get; }
@@ -28,9 +28,18 @@ namespace machine.Field
 
 		public void SetPosition (float x, float y)
 		{
-			_object.transform.position = new Vector3 (x, y, DEFAULT_Z);
+			_object.transform.position = new Vector3 (x, y, DefaultZ);
 		}
 
-		public virtual void Move (Vector3 position, Quaternion rotation) {}
+		public virtual void Move (Vector3 position, Quaternion rotation)
+		{
+			_object.transform.position = position;
+			_object.transform.rotation = rotation;
+		}
+
+		public void DestroyObject ()
+		{
+			UnityEngine.Object.Destroy (_object);
+		}
 	}
 }

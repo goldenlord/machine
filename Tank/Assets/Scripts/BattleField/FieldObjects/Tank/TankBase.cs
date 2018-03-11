@@ -23,6 +23,8 @@ namespace machine.Tank
 
 		private Cannon _cannon;
 
+		public override bool CanBePassThrough { get { return false; } }
+
 		public TankBase (GameObject tankPrefab, GameObject bulletPrefab, BattleField field, bool isPlayer)
 		{
 			Field = field;
@@ -63,7 +65,7 @@ namespace machine.Tank
 				return;
 			}
 			//check movability
-			if (Field.CheckTankMovable (this, newPosition))
+			if (Field.CheckMovable (this, newPosition))
 			{
 				View.Move (newPosition, newRotation);
 			}

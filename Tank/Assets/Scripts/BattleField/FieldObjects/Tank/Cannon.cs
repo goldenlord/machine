@@ -7,7 +7,6 @@ namespace machine.Tank
 	{
 		private const float DEFAULT_SHOOTING_FREQUENCE = 1f;
 		private const float DEFAULT_BULLET_SPEED = 50f;
-		private const float BULLET_POSITION_Z = -0.5f;
 
 		private GameObject _bulletPrefab;
 
@@ -30,9 +29,7 @@ namespace machine.Tank
 			yield return null;
 			while (true)
 			{
-				GameObject bulletObject = UnityEngine.Object.Instantiate (_bulletPrefab);
-				Bullet bullet = bulletObject.GetComponent<Bullet> ();
-				bulletObject.transform.position = new Vector3 (_tank.View.Position.x, _tank.View.Position.y, BULLET_POSITION_Z);
+				Bullet bullet = CreateBullet ();
 				yield return null;//wait for 1 frame;
 				//bullet initialize
 				bullet.Speed = BulletSpeed;
@@ -40,6 +37,14 @@ namespace machine.Tank
 
 				yield return new WaitForSeconds (1f / ShootingFrequence);
 			}
+		}
+
+		private Bullet CreateBullet ()
+		{
+			Bullet bullet = new Bullet (_bulletPrefab, _tank);
+			_tank.Field.FieldObjects.Add (bullet);
+			_tank.Field.Bullets.Add (bullet);
+			return bullet;
 		}
 	}
 }
